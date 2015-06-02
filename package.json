@@ -1,0 +1,36 @@
+{
+  "name": "shelltest",
+  "version": "1.0.0",
+  "description": "Acceptance testing framework for CLI applications",
+  "main": "shelltest.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jolshevski/shelltest"
+  },
+  "keywords": [
+    "shell",
+    "bash",
+    "cli",
+    "test",
+    "mocha",
+    "acceptance",
+    "bdd",
+    "tdd"
+  ],
+  "author": "Jordan Olshevski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jolshevski/shelltest/issues"
+  },
+  "homepage": "https://github.com/jolshevski/shelltest",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0"
+  },
+  "engines" : { "npm" : ">=0.6" }
+}
