@@ -1,7 +1,7 @@
 # shelltest
-JS acceptance testing framework for CLI applications.
-
 [![Build Status](https://travis-ci.org/jolshevski/shelltest.svg?branch=master)](https://travis-ci.org/jolshevski/shelltest)
+
+JS acceptance testing framework for CLI applications.
 
 
 ## Purpose
