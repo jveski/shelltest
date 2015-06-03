@@ -22,35 +22,75 @@ describe('shelltest', function(){
     expect(exec).to.have.been.calledWith(testCmd);
   });
 
-  it('should honor configuration of the cwd', function(){
-    shelltest().cmd(testCmd).cwd("testcwd").end();
-    expect(exec).to.have.been.calledWith(testCmd, {"cwd": "testcwd"});
+  describe('options', function(){
+    it('should honor configuration of the cwd', function(){
+      shelltest().cmd(testCmd).cwd("testcwd").end();
+      expect(exec).to.have.been.calledWith(testCmd, {"cwd": "testcwd"});
+    });
+
+    it('should honor configuration of the env', function(){
+      shelltest().cmd(testCmd).env({"testkey": "testval"}).end();
+      expect(exec).to.have.been.calledWith(testCmd, {"env": {"testkey": "testval"}});
+    });
+
+    it('should honor configuration of the timeout', function(){
+      shelltest().cmd(testCmd).timeout(10).end();
+      expect(exec).to.have.been.calledWith(testCmd, {"timeout": 10});
+    });
+
+    it('should honor configuration of the uid', function(){
+      shelltest().cmd(testCmd).uid(11).end();
+      expect(exec).to.have.been.calledWith(testCmd, {"uid": 11});
+    });
+
+    it('should honor configuration of the gid', function(){
+      shelltest().cmd(testCmd).gid(12).end();
+      expect(exec).to.have.been.calledWith(testCmd, {"gid": 12});
+    });
+
+    it('should fire callback passed to end', function(){
+      var stub = sinon.stub();
+      shelltest().cmd(testCmd).end(stub);
+      expect(stub).to.have.been.called;
+    });
   });
 
-  it('should honor configuration of the env', function(){
-    shelltest().cmd(testCmd).env({"testkey": "testval"}).end();
-    expect(exec).to.have.been.calledWith(testCmd, {"env": {"testkey": "testval"}});
-  });
+  describe('assertions', function(){
+    it('should throw error when regex stdout expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', /^fail/).end()}).to.throw();
+    });
 
-  it('should honor configuration of the timeout', function(){
-    shelltest().cmd(testCmd).timeout(10).end();
-    expect(exec).to.have.been.calledWith(testCmd, {"timeout": 10});
-  });
+    it('should not throw error when regex stdout expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', /^test/).end()}).to.not.throw();
+    });
 
-  it('should honor configuration of the uid', function(){
-    shelltest().cmd(testCmd).uid(11).end();
-    expect(exec).to.have.been.calledWith(testCmd, {"uid": 11});
-  });
+    it('should throw error when string stdout expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', 'match').end()}).to.throw();
+    });
 
-  it('should honor configuration of the gid', function(){
-    shelltest().cmd(testCmd).gid(12).end();
-    expect(exec).to.have.been.calledWith(testCmd, {"gid": 12});
-  });
+    it('should not throw error when string stdout expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', 'test_stdout').end()}).to.not.throw();
+    });
 
-  it('should fire callback passed to end', function(){
-    var stub = sinon.stub();
-    shelltest().cmd(testCmd).end(stub);
-    expect(stub).to.have.been.called;
+    it('should throw error when regex strerr expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('strerr', /^fail/).end()}).to.throw();
+    });
+
+    it('should not throw error when regex strerr expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('strerr', /^test/).end()}).to.not.throw();
+    });
+
+    it('should throw error when string strerr expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('strerr', 'match').end()}).to.throw();
+    });
+
+    it('should not throw error when string strerr expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('strerr', 'test_strerr').end()}).to.not.throw();
+    });
+
+    it('should throw error when exit code expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect(1).end()}).to.throw();
+    });
   });
 
 });
