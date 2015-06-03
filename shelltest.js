@@ -24,7 +24,7 @@ var shelltest = function() {
     return this;
   };
 
-  [ "cwd", "env", "timeout", "uid", "gid", ].forEach(function(opt) {
+  [ "cwd", "env", "timeout", "uid", "gid" ].forEach(function(opt) {
     shelltest.prototype[opt] = function(val) {
       this.options[opt] = val;
       return this;
