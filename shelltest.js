@@ -35,8 +35,10 @@ var shelltest = function() {
     var me = this;
     process.exec(this.cmd, this.options, function(err, stdout, stderr){
       me.expectations.forEach(function(exp){
+        // Set value
         if (exp.matcher === 'stdout') { var value = stdout; }
         if (exp.matcher === 'stderr') { var value = stderr; }
+        // Make assertions
         if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value, 
           "Expected exit code of "+exp.value+" got "+err.code); }
         if (exp.type === 'String') { assert.equal(value, exp.value); }
