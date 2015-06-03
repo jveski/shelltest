@@ -3,3 +3,10 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
+deploy:
+  provider: npm
+  email: jordanolshevski@gmail.com
+  api_key:
+    secure: cMM2FwtrQ4kXG3pIeGsZNbXMOm9nosoQXbIb9wk09JzpQomzLKZ1BTGs0nW+n5549VowGn8J4XnkuMuldXH4xSAbPHTFhKDK7VNJZw4z1C+5Gk7jQtS5Rw0fUjsKASdr88Aiml5bxFndVjIb0i1cnJ2E1I5ztk5ZD2pMKrA7P9T7lCQyQ43bS7pof2jXhYKoKCpnAzjIZTlN7WpkdmLv6/I/WmEK61NiTaE1afAQ/tDdGsQg+6Wld/v2JnzwaZDEGHlCktwxhklposhA7zmbI4rPifoVB7YN4/i8fzr5x7bnVG4d3Hohbxm1InI/4Y+IiS9t9c7DgK/hRD2QWdkS7oJbob22oZULG9UXwQToTK/eMZgj4dJcyasF7dtJ6AECXI6OyZJXotCtXpxFoAtjwxmBekgCKxcK9764AEZEqn37eBpCGeXdV+6y/JNLe3HNowpN6mu69AQa9KxVUqraIvjjeqhunevfJW0yKo7jaSyuxSKdgSeJTAGp/bW0U3xinNe4C/1m92MtVl5y9Kf8a1afNmz4b2ZTkSMzcAuQveTlWRQ/yxSAPIYc5m31Amf9zpxgFDwAo0NnLlQBwNH+SaIBtEdlbvfS8qknc4f7GGn7S2Bu246OLfIcZruLc1eQpN58AQbZjHqp+cHzMwBU8ry71cUGVabsg3MkWqdi9tY=
+  on:
+    tags: true
