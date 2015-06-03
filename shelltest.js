@@ -16,7 +16,11 @@ var shelltest = function() {
   };
 
   shelltest.prototype.expect = function(var1, var2) {
-    this.expectations.push({ "type": var2.constructor.name, "matcher": var2, "value": var1 });
+    if (var2) {
+      this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
+    } else {
+      this.expectations.push({ "type": var1.constructor.name, "value": var1 });
+    }
     return this;
   };
 
@@ -31,6 +35,11 @@ var shelltest = function() {
     var me = this;
     process.exec(this.cmd, this.options, function(err, stdout, stderr){
       me.expectations.forEach(function(exp){
+        if (exp.matcher === 'stdout') { var value = stdout; }
+        if (exp.matcher === 'stderr') { var value = stderr; }
+        if (exp.type === 'Number') { assert.equal(err.code, exp.value); }
+        if (exp.type === 'String') { assert.equal(value, exp.value); }
+        if (exp.type === 'RegExp') { assert(exp.value.test(value)) }
       });
     });
     if (cb) { cb(); }
