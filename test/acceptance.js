@@ -14,7 +14,7 @@ describe('shelltest', function(){
   var exec;
   before(function(){
     exec = sinon.stub(process, "exec");
-    exec.yields(null, "test_stdout", null);
+    exec.yields({"code": 0}, "test_stdout", "test_stderr");
   });
 
   it('should run the command', function(){
