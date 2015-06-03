@@ -89,7 +89,7 @@ describe('shelltest', function(){
     });
 
     it('should throw error when exit code expectation is not met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect(1).end()}).to.throw();
+      expect(function(){shelltest().cmd(testCmd).expect(1).end()}).to.throw("Expected exit code of 1 got 0");
     });
 
     it('should not throw error when exit code expectation is met', function(){
