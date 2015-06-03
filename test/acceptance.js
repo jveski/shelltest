@@ -91,6 +91,10 @@ describe('shelltest', function(){
     it('should throw error when exit code expectation is not met', function(){
       expect(function(){shelltest().cmd(testCmd).expect(1).end()}).to.throw();
     });
+
+    it('should not throw error when exit code expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect(0).end()}).to.not.throw();
+    });
   });
 
 });
