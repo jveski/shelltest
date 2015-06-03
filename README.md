@@ -1,5 +1,6 @@
 # shelltest
-Acceptance testing framework for CLI applications.
+JS acceptance testing framework for CLI applications.
+
 [![Build Status](https://travis-ci.org/jolshevski/shelltest.svg?branch=master)](https://travis-ci.org/jolshevski/shelltest)
 
 
@@ -12,7 +13,7 @@ This framework is intended to serve as a friendly layer of abstraction for testi
 shelltest()
 .cmd("/usr/bin/my_command")
 .expect('stdout', /^regex.match/)
-.end()
+.end();
 ```
 
 ### With Mocha
@@ -22,7 +23,7 @@ it('should run the command', function(done){
   .cmd("/usr/bin/my_command")
   .expect('stdout', /^match/)
   .expect(0)
-  .end(done)
+  .end(done);
 });
 ```
 
@@ -30,7 +31,7 @@ it('should run the command', function(done){
 ## API
 
 ### .cmd(command)
-Sets command to be executed.
+Sets the command to be executed.
 ```javascript
 .cmd("/bin/my_command")
 ```
@@ -38,7 +39,7 @@ Sets command to be executed.
 ### .expect(value, match)
 Adds an assertion.  All assertions are evaluated when `.end(fn)` is called.
 ```javascript
-.expect('stderr', /^regex.match)  //Asserts stderr
+.expect('stderr', /^regex.match/) //Asserts stderr
 .expect('stdout', 'string match') //Asserts stdout
 .expect(0)                        //Asserts exit code
 ```
