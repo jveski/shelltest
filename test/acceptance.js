@@ -17,46 +17,34 @@ describe('shelltest', function(){
     exec.yields(null, "test_stdout", null);
   });
 
-  describe('.send', function(){
-    it('should run the command', function(){
-      shelltest().cmd(testCmd).end();
-      expect(exec).to.have.been.calledWith(testCmd);
-    });
+  it('should run the command', function(){
+    shelltest().cmd(testCmd).end();
+    expect(exec).to.have.been.calledWith(testCmd);
   });
 
-  describe('.cwd', function(){
-    it('should run the command with cwd option', function(){
-      shelltest().cmd(testCmd).cwd("testcwd").end();
-      expect(exec).to.have.been.calledWith(testCmd, {"cwd": "testcwd"});
-    });
+  it('should honor configuration of the cwd', function(){
+    shelltest().cmd(testCmd).cwd("testcwd").end();
+    expect(exec).to.have.been.calledWith(testCmd, {"cwd": "testcwd"});
   });
 
-  describe('.env', function(){
-    it('should run the command with env option', function(){
-      shelltest().cmd(testCmd).env({"testkey": "testval"}).end();
-      expect(exec).to.have.been.calledWith(testCmd, {"env": {"testkey": "testval"}});
-    });
+  it('should honor configuration of the env', function(){
+    shelltest().cmd(testCmd).env({"testkey": "testval"}).end();
+    expect(exec).to.have.been.calledWith(testCmd, {"env": {"testkey": "testval"}});
   });
 
-  describe('.timeout', function(){
-    it('should run the command with timeout option', function(){
-      shelltest().cmd(testCmd).timeout(10).end();
-      expect(exec).to.have.been.calledWith(testCmd, {"timeout": 10});
-    });
+  it('should honor configuration of the timeout', function(){
+    shelltest().cmd(testCmd).timeout(10).end();
+    expect(exec).to.have.been.calledWith(testCmd, {"timeout": 10});
   });
 
-  describe('.uid', function(){
-    it('should run the command with uid option', function(){
-      shelltest().cmd(testCmd).uid(11).end();
-      expect(exec).to.have.been.calledWith(testCmd, {"uid": 11});
-    });
+  it('should honor configuration of the uid', function(){
+    shelltest().cmd(testCmd).uid(11).end();
+    expect(exec).to.have.been.calledWith(testCmd, {"uid": 11});
   });
 
-  describe('.gid', function(){
-    it('should run the command with gid option', function(){
-      shelltest().cmd(testCmd).gid(12).end();
-      expect(exec).to.have.been.calledWith(testCmd, {"gid": 12});
-    });
+  it('should honor configuration of the gid', function(){
+    shelltest().cmd(testCmd).gid(12).end();
+    expect(exec).to.have.been.calledWith(testCmd, {"gid": 12});
   });
 
 });
