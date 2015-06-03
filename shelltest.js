@@ -37,7 +37,7 @@ var shelltest = function() {
       me.expectations.forEach(function(exp){
         if (exp.matcher === 'stdout') { var value = stdout; }
         if (exp.matcher === 'stderr') { var value = stderr; }
-        if (exp.type === 'Number') { assert.equal(err.code, exp.value); }
+        if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value); }
         if (exp.type === 'String') { assert.equal(value, exp.value); }
         if (exp.type === 'RegExp') { assert(exp.value.test(value)) }
       });

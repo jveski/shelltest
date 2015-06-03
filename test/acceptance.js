@@ -95,6 +95,11 @@ describe('shelltest', function(){
     it('should not throw error when exit code expectation is met', function(){
       expect(function(){shelltest().cmd(testCmd).expect(0).end()}).to.not.throw();
     });
+
+    it('should not throw error when command exits without an error', function(){
+      exec.yields(null, "test_stdout", "test_stderr");
+      expect(function(){shelltest().cmd(testCmd).expect(0).end()}).to.not.throw();
+    });
   });
 
 });
