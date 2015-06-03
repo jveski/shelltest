@@ -22,6 +22,10 @@ describe('shelltest', function(){
     expect(exec).to.have.been.calledWith(testCmd);
   });
 
+  it('should throw an error if no command is set', function(){
+    expect(function(){shelltest().cmd(null).end()}).to.throw(".end called before command set");
+  });
+
   describe('options', function(){
     it('should honor configuration of the cwd', function(){
       shelltest().cmd(testCmd).cwd("testcwd").end();

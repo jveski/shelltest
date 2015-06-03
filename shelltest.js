@@ -33,6 +33,7 @@ var shelltest = function() {
 
   shelltest.prototype.end = function(cb) {
     var me = this;
+    if (this.cmd === null) { throw new Error(".end called before command set") }
     process.exec(this.cmd, this.options, function(err, stdout, stderr){
       me.expectations.forEach(function(exp){
         // Set value
