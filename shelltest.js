@@ -25,6 +25,7 @@ var shelltest = function() {
         // Evaluate expectations
       });
     });
+    if (cb) { cb(); }
     return this;
   };
 

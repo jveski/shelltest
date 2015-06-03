@@ -47,4 +47,10 @@ describe('shelltest', function(){
     expect(exec).to.have.been.calledWith(testCmd, {"gid": 12});
   });
 
+  it('should fire callback passed to end', function(){
+    var stub = sinon.stub();
+    shelltest().cmd(testCmd).end(stub);
+    expect(stub).to.have.been.called;
+  });
+
 });
