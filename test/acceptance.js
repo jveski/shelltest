@@ -72,20 +72,20 @@ describe('shelltest', function(){
       expect(function(){shelltest().cmd(testCmd).expect('stdout', 'test_stdout').end()}).to.not.throw();
     });
 
-    it('should throw error when regex strerr expectation is not met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('strerr', /^fail/).end()}).to.throw();
+    it('should throw error when regex stderr expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stderr', /^fail/).end()}).to.throw();
     });
 
-    it('should not throw error when regex strerr expectation is met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('strerr', /^test/).end()}).to.not.throw();
+    it('should not throw error when regex stderr expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stderr', /^test/).end()}).to.not.throw();
     });
 
-    it('should throw error when string strerr expectation is not met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('strerr', 'match').end()}).to.throw();
+    it('should throw error when string stderr expectation is not met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stderr', 'match').end()}).to.throw();
     });
 
-    it('should not throw error when string strerr expectation is met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('strerr', 'test_strerr').end()}).to.not.throw();
+    it('should not throw error when string stderr expectation is met', function(){
+      expect(function(){shelltest().cmd(testCmd).expect('stderr', 'test_stderr').end()}).to.not.throw();
     });
 
     it('should throw error when exit code expectation is not met', function(){
