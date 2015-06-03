@@ -57,7 +57,7 @@ describe('shelltest', function(){
 
   describe('assertions', function(){
     it('should throw error when regex stdout expectation is not met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('stdout', /^fail/).end()}).to.throw();
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', /^fail/).end()}).to.throw("Expected stdout to match /^fail/ got test_stdout");
     });
 
     it('should not throw error when regex stdout expectation is met', function(){
@@ -65,7 +65,7 @@ describe('shelltest', function(){
     });
 
     it('should throw error when string stdout expectation is not met', function(){
-      expect(function(){shelltest().cmd(testCmd).expect('stdout', 'match').end()}).to.throw();
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', 'match').end()}).to.throw("Expected stdout to equal match got test_stdout");
     });
 
     it('should not throw error when string stdout expectation is met', function(){

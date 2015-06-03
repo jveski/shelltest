@@ -39,10 +39,12 @@ var shelltest = function() {
         if (exp.matcher === 'stdout') { var value = stdout; }
         if (exp.matcher === 'stderr') { var value = stderr; }
         // Make assertions
-        if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value, 
+        if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value,
           "Expected exit code of "+exp.value+" got "+err.code); }
-        if (exp.type === 'String') { assert.equal(value, exp.value); }
-        if (exp.type === 'RegExp') { assert(exp.value.test(value)) }
+        if (exp.type === 'String') { assert.equal(value, exp.value,
+          "Expected "+exp.matcher+" to equal "+exp.value+" got "+value); }
+        if (exp.type === 'RegExp') { assert(exp.value.test(value),
+          "Expected "+exp.matcher+" to match "+exp.value+" got "+value) }
       });
     });
     if (cb) { cb(); }
