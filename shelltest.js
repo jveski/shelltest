@@ -16,19 +16,6 @@ var shelltest = function() {
     return this;
   };
 
-  // Run the command and process expectations
-  shelltest.prototype.end = function(cb) {
-    var me = this;
-    process.exec(this.cmd, this.options, function(err, stdout, stderr){
-      me.expectations.forEach(function(exp){
-        var input = stdout;
-        // Evaluate expectations
-      });
-    });
-    if (cb) { cb(); }
-    return this;
-  };
-
   // Add an expectation
   shelltest.prototype.expect = function(var1, var2) {
     this.expectations.push({ "type": var2.constructor.name, "matcher": var2, "value": var1 });
@@ -42,5 +29,18 @@ var shelltest = function() {
       return this;
     };
   });
+
+  // Run the command and process expectations
+  shelltest.prototype.end = function(cb) {
+    var me = this;
+    process.exec(this.cmd, this.options, function(err, stdout, stderr){
+      me.expectations.forEach(function(exp){
+        var input = stdout;
+        // Evaluate expectations
+      });
+    });
+    if (cb) { cb(); }
+    return this;
+  };
 
 };
