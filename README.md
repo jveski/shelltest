@@ -1,5 +1,5 @@
 # shelltest
-[![Build Status](https://travis-ci.org/jolshevski/shelltest.svg?branch=master)](https://travis-ci.org/jolshevski/shelltest)
+[![Build Status](https://travis-ci.org/jolshevski/shelltest.svg?branch=master)](https://travis-ci.org/jolshevski/shelltest) [![npm version](https://badge.fury.io/js/shelltest.svg)](http://badge.fury.io/js/shelltest)
 
 JS acceptance testing framework for CLI applications.
 
@@ -85,3 +85,4 @@ Executes command and evaluates assertions. Callback is fired without arguments.
 ```javascript
 .end(callback_function)
 ```
+
