@@ -8,6 +8,12 @@ JS acceptance testing framework for CLI applications.
 This framework is intended to serve as a friendly layer of abstraction for testing the stdout, stderr, and exit code of shell commands. It's like supertest, but for CLI apps.
 
 
+## Installation
+```
+npm install shelltest --save
+```
+
+
 ## Example
 ```javascript
 shelltest()
