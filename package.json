@@ -1,6 +1,6 @@
 {
   "name": "shelltest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Acceptance testing framework for CLI applications",
   "main": "shelltest.js",
   "scripts": {
