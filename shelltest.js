@@ -47,8 +47,8 @@ var shelltest = function() {
         if (exp.type === 'RegExp') { assert(exp.value.test(value),
           "Expected "+exp.matcher+" to match "+exp.value+" got "+value) }
       });
+      if (cb) { cb(); }
     });
-    if (cb) { cb(); }
     return this;
   };
 
