@@ -32,24 +32,39 @@ var shelltest = function() {
   });
 
   shelltest.prototype.end = function(cb) {
-    var me = this;
+    var expectations = this.expectations;
     if (this.cmd === null) { throw new Error(".end called before command set") }
     process.exec(this.cmd, this.options, function(err, stdout, stderr){
-      me.expectations.forEach(function(exp){
-        // Set value
-        if (exp.matcher === 'stdout') { var value = stdout; }
-        if (exp.matcher === 'stderr') { var value = stderr; }
-        // Make assertions
-        if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value,
-          "Expected exit code of "+exp.value+" got "+err.code); }
-        if (exp.type === 'String') { assert.equal(value, exp.value,
-          "Expected "+exp.matcher+" to equal "+exp.value+" got "+value); }
-        if (exp.type === 'RegExp') { assert(exp.value.test(value),
-          "Expected "+exp.matcher+" to match "+exp.value+" got "+value) }
-      });
+      try {
+        runAllAsserts(expectations, err, stdout, stderr)
+      } catch (e) {
+        if (cb) {
+          cb(e, stdout, stderr);
+          return
+        } else {
+          throw e
+        }
+      }
+      if (cb) {
+        cb(err ? err : null, stdout, stderr);
+      }
     });
-    if (cb) { cb(); }
     return this;
   };
 
 };
+
+function runAllAsserts (expectations, err, stdout, stderr) {
+  expectations.forEach(function(exp){
+    // Set value
+    if (exp.matcher === 'stdout') { var value = stdout; }
+    if (exp.matcher === 'stderr') { var value = stderr; }
+    // Make assertions
+    if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value,
+      "Expected exit code of "+exp.value+" got "+err.code); }
+    if (exp.type === 'String') { assert.equal(value, exp.value,
+      "Expected "+exp.matcher+" to equal "+exp.value+" got "+value); }
+    if (exp.type === 'RegExp') { assert(exp.value.test(value),
+      "Expected "+exp.matcher+" to match "+exp.value+" got "+value) }
+  });
+}

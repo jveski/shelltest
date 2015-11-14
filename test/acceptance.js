@@ -104,6 +104,33 @@ describe('shelltest', function(){
       exec.yields(null, "test_stdout", "test_stderr");
       expect(function(){shelltest().cmd(testCmd).expect(0).end()}).to.not.throw();
     });
+
+    it('should pass the assert errors in the callback when defined', function(){
+      exec.yields({"code": 0}, "test_stdout", "test_stderr");
+      var callbackSpy = sinon.spy()
+      function testWithCallback() {shelltest().cmd(testCmd).expect(1).end(callbackSpy)}
+
+      expect(testWithCallback).not.to.throw();
+      expect(callbackSpy).have.been.calledWith(
+        sinon.match.instanceOf(Error)
+          .and(sinon.match.hasOwn("message", 'Expected exit code of 1 got 0')),
+        "test_stdout",
+        "test_stderr"
+      );
+    });
+
+    it('should pass unmatched errors in the callback when defined', function(){
+      exec.yields({"code": 1}, "test_stdout", "test_stderr");
+      var callbackSpy = sinon.spy()
+      function testWithCallback() {shelltest().cmd(testCmd).end(callbackSpy)}
+
+      expect(testWithCallback).not.to.throw();
+      expect(callbackSpy).have.been.calledWith(
+        {"code": 1},
+        "test_stdout",
+        "test_stderr"
+      );
+    });
   });
 
 });
