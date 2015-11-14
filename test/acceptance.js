@@ -17,6 +17,10 @@ describe('shelltest', function(){
     exec.yields({"code": 0}, "test_stdout", "test_stderr");
   });
 
+  after(function(){
+    process.exec.restore();
+  });
+
   it('should run the command', function(){
     shelltest().cmd(testCmd).end();
     expect(exec).to.have.been.calledWith(testCmd);
