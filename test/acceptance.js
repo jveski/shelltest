@@ -135,6 +135,16 @@ describe('shelltest', function(){
         "test_stderr"
       );
     });
+
+    it('should not throw error when string stdout expectation is met and falsy', function(){
+      exec.yields(null, "", "test_stderr");
+      expect(function(){shelltest().cmd(testCmd).expect('stdout', '').end()}).to.not.throw();
+    });
+
+    it('should not throw error when string stderr expectation is met and falsy', function(){
+      exec.yields(null, "test_stdout", "");
+      expect(function(){shelltest().cmd(testCmd).expect('stderr', '').end()}).to.not.throw();
+    });
   });
 
 });

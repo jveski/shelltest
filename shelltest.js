@@ -16,7 +16,7 @@ var shelltest = function() {
   };
 
   shelltest.prototype.expect = function(var1, var2) {
-    if (var2) {
+    if (arguments.length > 1) {
       this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
     } else {
       this.expectations.push({ "type": var1.constructor.name, "value": var1 });
