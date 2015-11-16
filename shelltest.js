@@ -1,6 +1,6 @@
 "use strict"
 var process = require('child_process');
-var assert = require('assert');
+var assert = require('./lib/assertion');
 
 module.exports = function() {
   return new constructor;
@@ -24,9 +24,9 @@ proto.gid = buildSetter("gid");
 // assertion objects onto the test
 proto.expect = function(arg1, arg2) {
   if (arguments.length > 1) {
-    this.expectations.push(new valueAssertion(arg1, arg2));
+    this.expectations.push(new assert.value(arg1, arg2));
   } else {
-    this.expectations.push(new exitCodeAssertion(arg1));
+    this.expectations.push(new assert.exitCode(arg1));
   }
 
   return this;
@@ -52,27 +52,6 @@ proto.end = function(cb) {
   });
   return this;
 };
-
-function valueAssertion(attribute, expectation) {
-  this.attribute = attribute;
-  this.expectation = expectation;
-}
-
-function exitCodeAssertion(expectation) {
-  this.expectation = expectation;
-}
-
-valueAssertion.prototype.assert = function(value) {
-  if (this.expectation.constructor.name === "RegExp") {
-    assert(this.expectation.test(value), "Expected " + this.attribute + " to match " + this.expectation + " got " + value);
-  } else {
-    assert.equal(value, this.expectation, "Expected " + this.attribute + " to equal " + this.expectation + " got " + value);
-  }
-}
-
-exitCodeAssertion.prototype.assert = function(_, code) {
-  assert.equal(code, this.expectation, "Expected exit code of " + this.expectation + " got " + code);
-}
 
 // buildSetter returns a function that
 // takes a value and assigns it to the
