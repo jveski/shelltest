@@ -32,29 +32,26 @@ proto.expect = function(arg1, arg2) {
   return this;
 };
 
-proto.end = function(cb) {
-  var assertions = this.assertions;
+proto.end = function(callback) {
+  var assertions = this.assertions; //Bind the assertions array in the local scope
+
   if (this.cmd === null) { throw new Error(".end called before command set") }
+
   process.exec(this.cmd, this.options, function(err, stdout, stderr){
-    try {
-      var code = err === null ? 0 : err.code;
-      runAssertions(assertions, code, stdout, stderr);
-    } catch (e) {
-      if (cb) {
-        cb(e, stdout, stderr);
-        return
-      } else {
-        throw e
-      }
-    }
-    if (cb) {
-      cb(err ? err : null, stdout, stderr);
-    }
+    var code = err === null ? 0 : err.code;
+
+    var evaluator = buildEvaluator(assertions, code, stdout, stderr);
+    var evaluatorCallback = buildEvaluatorCallback(stdout, stderr, callback);
+    proxyErrorToCallback(evaluator, evaluatorCallback);
+
+    // Invoke the callback function with the error, stdout, and stderr if provided
+    if (callback) { callback(err ? err : null, stdout, stderr); }
   });
+
   return this;
 };
 
-// buildSetter returns a function that
+// BuildSetter returns a function that
 // takes a value and assigns it to the
 // key on the object.
 function buildSetter(key) {
@@ -76,4 +73,33 @@ function runAssertions(assertions, code, stdout, stderr) {
 
     assertion.assert(value, code);
   });
+}
+
+// BuildEvaluator currys the runAssertions function to
+// interface it with the proxyErrorToCallback function.
+function buildEvaluator(assertions, code, stdout, stderr) {
+  return function() { runAssertions(assertions, code, stdout, stderr); }
+}
+
+// BuildEvaluatorCallback currys the evaluator's callback
+// to interface it with the proxyErrorToCallback function.
+function buildEvaluatorCallback(stdout, stderr, callback) {
+  return function(runtimeError) {
+    if (callback) {
+      callback(runtimeError, stdout, stderr);
+    } else {
+      throw runtimeError;
+    }
+  }
+}
+
+// ProxyErrorToCallback takes a function, calls it,
+// handles any errors, and routes them to the provided
+// callback function.
+function proxyErrorToCallback(fn, callback) {
+    try {
+      fn();
+    } catch (e) {
+      callback(e);
+    }
 }
