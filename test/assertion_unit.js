@@ -14,7 +14,7 @@ describe('assertion', function(){
       subject.expectation = 'stub expectation';
 
       expect(function() {
-        subject.assert('stub value')
+        subject.assert('stub value');
       }).to.throw('Expected stub attribute to equal stub expectation got stub value');
     });
 
@@ -24,8 +24,8 @@ describe('assertion', function(){
       subject.expectation = 'stub value';
 
       expect(function() {
-        subject.assert('stub value')
-      }).to.not.throw()
+        subject.assert('stub value');
+      }).to.not.throw();
     });
 
     it('should raise an error if the regex expectation does not match the value', function() {
@@ -34,7 +34,7 @@ describe('assertion', function(){
       subject.expectation = /stub expectation/;
 
       expect(function() {
-        subject.assert('stub value')
+        subject.assert('stub value');
       }).to.throw('Expected stub attribute to match /stub expectation/ got stub value');
     });
 
@@ -44,8 +44,8 @@ describe('assertion', function(){
       subject.expectation = /stub value/;
 
       expect(function() {
-        subject.assert('stub value')
-      }).to.not.throw()
+        subject.assert('stub value');
+      }).to.not.throw();
     });
   });
 
@@ -54,16 +54,16 @@ describe('assertion', function(){
       var subject = new assert.exitCode(123);
 
       expect(function() {
-        subject.assert(undefined, 123)
-      }).to.not.throw()
+        subject.assert(undefined, 123);
+      }).to.not.throw();
     });
 
     it('should raise an error if the expectation does not match the value', function() {
       var subject = new assert.exitCode(123);
 
       expect(function() {
-        subject.assert(undefined, 1)
-      }).to.throw('Expected exit code of 123 got 1')
+        subject.assert(undefined, 1);
+      }).to.throw('Expected exit code of 123 got 1');
     });
   });
 });
