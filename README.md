@@ -80,8 +80,12 @@ Sets `child_process` gid option.
 .gid(0)
 ```
 
-### .end(fn)
-Executes command and evaluates assertions. Callback is fired without arguments.
+### .end([fn])
+Executes command and evaluates assertions. `end()` will throw with no callback.
+Callback is fired with `fn(err, stdout, stderr)` :
+- `err`: null or the assert or process error
+- `stdout`: the output string 
+- `stderr`: the error string 
 ```javascript
 .end(callback_function)
 ```
