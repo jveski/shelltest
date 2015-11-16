@@ -11,14 +11,16 @@ var constructor = function() {
   this.expectations = [];
 };
 
-constructor.prototype.cmd = buildSetter("cmd");
-constructor.prototype.cwd = buildSetter("cwd");
-constructor.prototype.env = buildSetter("env");
-constructor.prototype.timeout = buildSetter("timeout");
-constructor.prototype.uid = buildSetter("uid");
-constructor.prototype.gid = buildSetter("gid");
+var proto = constructor.prototype;
 
-constructor.prototype.expect = function(var1, var2) {
+proto.cmd = buildSetter("cmd");
+proto.cwd = buildSetter("cwd");
+proto.env = buildSetter("env");
+proto.timeout = buildSetter("timeout");
+proto.uid = buildSetter("uid");
+proto.gid = buildSetter("gid");
+
+proto.expect = function(var1, var2) {
   if (arguments.length > 1) {
     this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
   } else {
@@ -27,7 +29,7 @@ constructor.prototype.expect = function(var1, var2) {
   return this;
 };
 
-constructor.prototype.end = function(cb) {
+proto.end = function(cb) {
   var expectations = this.expectations;
   if (this.cmd === null) { throw new Error(".end called before command set") }
   process.exec(this.cmd, this.options, function(err, stdout, stderr){
