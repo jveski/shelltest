@@ -23,12 +23,8 @@ proto.gid = buildSetter("gid");
 // Expect takes user input and pushes
 // assertion objects onto the test
 proto.expect = function(arg1, arg2) {
-  if (arguments.length > 1) {
-    this.assertions.push(new assert.value(arg1, arg2));
-  } else {
-    this.assertions.push(new assert.exitCode(arg1));
-  }
-
+  var hasTwoArgs = arguments.length > 1;
+  this.assertions.push(hasTwoArgs ? new assert.value(arg1, arg2) : new assert.exitCode(arg1));
   return this;
 };
 
