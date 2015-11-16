@@ -37,7 +37,7 @@ proto.end = function(cb) {
   if (this.cmd === null) { throw new Error(".end called before command set") }
   process.exec(this.cmd, this.options, function(err, stdout, stderr){
     try {
-      runAllAsserts(expectations, err, stdout, stderr)
+      runAssertions(expectations, err, stdout, stderr)
     } catch (e) {
       if (cb) {
         cb(e, stdout, stderr);
@@ -72,8 +72,8 @@ function buildSetter(key) {
   }
 }
 
-function runAllAsserts (expectations, err, stdout, stderr) {
-  expectations.forEach(function(exp){
+function runAssertions(expectations, err, stdout, stderr) {
+  expectations.forEach(function(exp) {
     var value;
     if (exp.attribute === 'stdout') { value = stdout; }
     if (exp.attribute === 'stderr') { value = stderr; }
