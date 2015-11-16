@@ -1,11 +1,11 @@
 # shelltest
 [![Build Status](https://travis-ci.org/jolshevski/shelltest.svg?branch=master)](https://travis-ci.org/jolshevski/shelltest) [![npm version](https://badge.fury.io/js/shelltest.svg)](http://badge.fury.io/js/shelltest)
 
-JS acceptance testing framework for CLI applications.
+JS acceptance testing framework for CLI applications. It's like supertest, but for CLI apps.
 
 
 ## Purpose
-This framework is intended to serve as a friendly layer of abstraction for testing the stdout, stderr, and exit code of shell commands. It's like supertest, but for CLI apps.
+This framework provides a simple means of executing shell commands and asserting on the results.
 
 
 ## Installation
