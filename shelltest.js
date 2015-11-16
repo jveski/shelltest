@@ -9,37 +9,6 @@ module.exports = function() {
 var constructor = function() {
   this.options = {};
   this.expectations = [];
-
-  constructor.prototype.expect = function(var1, var2) {
-    if (arguments.length > 1) {
-      this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
-    } else {
-      this.expectations.push({ "type": var1.constructor.name, "value": var1 });
-    }
-    return this;
-  };
-
-  constructor.prototype.end = function(cb) {
-    var expectations = this.expectations;
-    if (this.cmd === null) { throw new Error(".end called before command set") }
-    process.exec(this.cmd, this.options, function(err, stdout, stderr){
-      try {
-        runAllAsserts(expectations, err, stdout, stderr)
-      } catch (e) {
-        if (cb) {
-          cb(e, stdout, stderr);
-          return
-        } else {
-          throw e
-        }
-      }
-      if (cb) {
-        cb(err ? err : null, stdout, stderr);
-      }
-    });
-    return this;
-  };
-
 };
 
 constructor.prototype.cmd = buildSetter("cmd");
@@ -48,6 +17,36 @@ constructor.prototype.env = buildSetter("env");
 constructor.prototype.timeout = buildSetter("timeout");
 constructor.prototype.uid = buildSetter("uid");
 constructor.prototype.gid = buildSetter("gid");
+
+constructor.prototype.expect = function(var1, var2) {
+  if (arguments.length > 1) {
+    this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
+  } else {
+    this.expectations.push({ "type": var1.constructor.name, "value": var1 });
+  }
+  return this;
+};
+
+constructor.prototype.end = function(cb) {
+  var expectations = this.expectations;
+  if (this.cmd === null) { throw new Error(".end called before command set") }
+  process.exec(this.cmd, this.options, function(err, stdout, stderr){
+    try {
+      runAllAsserts(expectations, err, stdout, stderr)
+    } catch (e) {
+      if (cb) {
+        cb(e, stdout, stderr);
+        return
+      } else {
+        throw e
+      }
+    }
+    if (cb) {
+      cb(err ? err : null, stdout, stderr);
+    }
+  });
+  return this;
+};
 
 // buildSetter returns a function that
 // takes a value and assigns it to the
