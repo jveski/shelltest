@@ -6,13 +6,6 @@ module.exports = function() {
   return new constructor;
 }
 
-// A setter method will be added to the constructor's
-// prototype for each string in the optionSetters array.
-// 
-// These methods can be used to assign values to the
-// options object to be passed to child_process.exec.
-var optionSetters = [ "cwd", "env", "timeout", "uid", "gid" ]
-
 var constructor = function() {
   this.options = {};
   this.expectations = [];
@@ -30,13 +23,6 @@ var constructor = function() {
     }
     return this;
   };
-
-  optionSetters.forEach(function(opt) {
-    constructor.prototype[opt] = function(val) {
-      this.options[opt] = val;
-      return this;
-    };
-  });
 
   constructor.prototype.end = function(cb) {
     var expectations = this.expectations;
@@ -60,6 +46,22 @@ var constructor = function() {
   };
 
 };
+
+// buildOptSetter returns a function that
+// takes a value and assigns it to the given
+// key on the instance's options object.
+function buildOptSetter(key) {
+  return function(val) {
+    this.options[key] = val;
+    return this;
+  }
+}
+
+constructor.prototype.cwd = buildOptSetter("cwd");
+constructor.prototype.env = buildOptSetter("env");
+constructor.prototype.timeout = buildOptSetter("timeout");
+constructor.prototype.uid = buildOptSetter("uid");
+constructor.prototype.gid = buildOptSetter("gid");
 
 function runAllAsserts (expectations, err, stdout, stderr) {
   expectations.forEach(function(exp){
