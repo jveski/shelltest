@@ -10,11 +10,6 @@ var constructor = function() {
   this.options = {};
   this.expectations = [];
 
-  constructor.prototype.cmd = function(val) {
-    this.cmd = val;
-    return this;
-  };
-
   constructor.prototype.expect = function(var1, var2) {
     if (arguments.length > 1) {
       this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
@@ -47,21 +42,31 @@ var constructor = function() {
 
 };
 
-// buildOptSetter returns a function that
-// takes a value and assigns it to the given
-// key on the instance's options object.
-function buildOptSetter(key) {
-  return function(val) {
-    this.options[key] = val;
-    return this;
+constructor.prototype.cmd = buildSetter("cmd");
+constructor.prototype.cwd = buildSetter("cwd");
+constructor.prototype.env = buildSetter("env");
+constructor.prototype.timeout = buildSetter("timeout");
+constructor.prototype.uid = buildSetter("uid");
+constructor.prototype.gid = buildSetter("gid");
+
+// buildSetter returns a function that
+// takes a value and assigns it to the
+// key on the object.
+function buildSetter(key) {
+  // If the key is cmd, set the cmd var
+  // not the cmd key on the options obj
+  if (key === "cmd") {
+    return function(val) {
+      this.cmd = val;
+      return this;
+    }
+  } else {
+    return function(val) {
+      this.options[key] = val;
+      return this;
+    }
   }
 }
-
-constructor.prototype.cwd = buildOptSetter("cwd");
-constructor.prototype.env = buildOptSetter("env");
-constructor.prototype.timeout = buildOptSetter("timeout");
-constructor.prototype.uid = buildOptSetter("uid");
-constructor.prototype.gid = buildOptSetter("gid");
 
 function runAllAsserts (expectations, err, stdout, stderr) {
   expectations.forEach(function(exp){
