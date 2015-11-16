@@ -6,6 +6,13 @@ module.exports = function() {
   return new constructor;
 }
 
+// A setter method will be added to the constructor's
+// prototype for each string in the optionSetters array.
+// 
+// These methods can be used to assign values to the
+// options object to be passed to child_process.exec.
+var optionSetters = [ "cwd", "env", "timeout", "uid", "gid" ]
+
 var constructor = function() {
   this.options = {};
   this.expectations = [];
@@ -24,7 +31,7 @@ var constructor = function() {
     return this;
   };
 
-  [ "cwd", "env", "timeout", "uid", "gid" ].forEach(function(opt) {
+  optionSetters.forEach(function(opt) {
     constructor.prototype[opt] = function(val) {
       this.options[opt] = val;
       return this;
