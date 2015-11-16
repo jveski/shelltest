@@ -1,7 +1,7 @@
+"use strict"
 var process = require('child_process');
 var assert = require('assert');
 
-// Construct a new shelltest
 module.exports = function() {
   return new shelltest;
 }
