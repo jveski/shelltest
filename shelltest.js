@@ -58,18 +58,10 @@ proto.end = function(cb) {
 // takes a value and assigns it to the
 // key on the object.
 function buildSetter(key) {
-  // If the key is cmd, set the cmd var
-  // not the cmd key on the options obj
   if (key === "cmd") {
-    return function(val) {
-      this.cmd = val;
-      return this;
-    }
+    return function(val) { this.cmd = val; return this; }
   } else {
-    return function(val) {
-      this.options[key] = val;
-      return this;
-    }
+    return function(val) { this.options[key] = val; return this; }
   }
 }
 
