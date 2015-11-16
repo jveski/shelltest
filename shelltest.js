@@ -8,7 +8,7 @@ module.exports = function() {
 
 var constructor = function() {
   this.options = {};
-  this.expectations = [];
+  this.assertions = [];
 };
 
 var proto = constructor.prototype;
@@ -24,21 +24,21 @@ proto.gid = buildSetter("gid");
 // assertion objects onto the test
 proto.expect = function(arg1, arg2) {
   if (arguments.length > 1) {
-    this.expectations.push(new assert.value(arg1, arg2));
+    this.assertions.push(new assert.value(arg1, arg2));
   } else {
-    this.expectations.push(new assert.exitCode(arg1));
+    this.assertions.push(new assert.exitCode(arg1));
   }
 
   return this;
 };
 
 proto.end = function(cb) {
-  var expectations = this.expectations;
+  var assertions = this.assertions;
   if (this.cmd === null) { throw new Error(".end called before command set") }
   process.exec(this.cmd, this.options, function(err, stdout, stderr){
     try {
-      var code = err === null ? 0 : err.code
-      runAssertions(expectations, code, stdout, stderr)
+      var code = err === null ? 0 : err.code;
+      runAssertions(assertions, code, stdout, stderr);
     } catch (e) {
       if (cb) {
         cb(e, stdout, stderr);
@@ -73,12 +73,12 @@ function buildSetter(key) {
   }
 }
 
-function runAssertions(expectations, code, stdout, stderr) {
-  expectations.forEach(function(exp) {
+function runAssertions(assertions, code, stdout, stderr) {
+  assertions.forEach(function(assertion) {
     var value;
-    if (exp.attribute === 'stdout') { value = stdout; }
-    if (exp.attribute === 'stderr') { value = stderr; }
+    if (assertion.attribute === 'stdout') { value = stdout; }
+    if (assertion.attribute === 'stderr') { value = stderr; }
 
-    exp.assert(value, code);
+    assertion.assert(value, code);
   });
 }
