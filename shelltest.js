@@ -73,6 +73,9 @@ function buildSetter(key) {
   }
 }
 
+// RunAssertions takes an array of assertion objects,
+// a test execution's code, stdout and stderr, and
+// invokes each assertion with the appropriate value.
 function runAssertions(assertions, code, stdout, stderr) {
   assertions.forEach(function(assertion) {
     var value;
