@@ -20,12 +20,15 @@ proto.timeout = buildSetter("timeout");
 proto.uid = buildSetter("uid");
 proto.gid = buildSetter("gid");
 
-proto.expect = function(var1, var2) {
+// Expect takes user input and pushes
+// assertion objects onto the test
+proto.expect = function(arg1, arg2) {
   if (arguments.length > 1) {
-    this.expectations.push({ "type": var2.constructor.name, "matcher": var1, "value": var2 });
+    this.expectations.push(new valueAssertion(arg1, arg2));
   } else {
-    this.expectations.push({ "type": var1.constructor.name, "value": var1 });
+    this.expectations.push(new exitCodeAssertion(arg1));
   }
+
   return this;
 };
 
@@ -50,6 +53,27 @@ proto.end = function(cb) {
   return this;
 };
 
+function valueAssertion(attribute, expectation) {
+  this.attribute = attribute;
+  this.expectation = expectation;
+}
+
+function exitCodeAssertion(expectation) {
+  this.expectation = expectation;
+}
+
+valueAssertion.prototype.assert = function(value) {
+  if (this.expectation.constructor.name === "RegExp") {
+    assert(this.expectation.test(value), "Expected " + this.attribute + " to match " + this.expectation + " got " + value);
+  } else {
+    assert.equal(value, this.expectation, "Expected " + this.attribute + " to equal " + this.expectation + " got " + value);
+  }
+}
+
+exitCodeAssertion.prototype.assert = function(_, code) {
+  assert.equal(code, this.expectation, "Expected exit code of " + this.expectation + " got " + code);
+}
+
 // buildSetter returns a function that
 // takes a value and assigns it to the
 // key on the object.
@@ -71,15 +95,11 @@ function buildSetter(key) {
 
 function runAllAsserts (expectations, err, stdout, stderr) {
   expectations.forEach(function(exp){
-    // Set value
-    if (exp.matcher === 'stdout') { var value = stdout; }
-    if (exp.matcher === 'stderr') { var value = stderr; }
-    // Make assertions
-    if (exp.type === 'Number' && err) { assert.equal(err.code, exp.value,
-      "Expected exit code of "+exp.value+" got "+err.code); }
-    if (exp.type === 'String') { assert.equal(value, exp.value,
-      "Expected "+exp.matcher+" to equal "+exp.value+" got "+value); }
-    if (exp.type === 'RegExp') { assert(exp.value.test(value),
-      "Expected "+exp.matcher+" to match "+exp.value+" got "+value) }
+    var value;
+    if (exp.attribute === 'stdout') { value = stdout; }
+    if (exp.attribute === 'stderr') { value = stderr; }
+
+    var code = err === null ? 0 : err.code
+    exp.assert(value, code);
   });
 }
